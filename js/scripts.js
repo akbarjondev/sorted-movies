@@ -96,7 +96,31 @@ selectedCatagories.forEach(function(catagory) {
 		allCatagories.push(cat);
 	}
 });
-allCatagories.sort()
+allCatagories.sort();
+
+var deleteDuplicatCatagory = function(catagoryArray) {
+	var cleanCatagories = [];
+	var firstCatagory = null;
+	
+	for(var nextCatagory of catagoryArray) {
+		if(firstCatagory === nextCatagory) {
+			continue;
+		} else {
+			firstCatagory = nextCatagory;
+			cleanCatagories.push(nextCatagory);
+		}
+	}
+
+	return cleanCatagories;
+}
+
+deleteDuplicatCatagory(allCatagories).forEach(function(catagory) {
+	var elNewOption = document.createElement('option');
+	elNewOption.value = catagory;
+	elNewOption.textContent = catagory;
+
+	elCatagories.append(elNewOption);
+});
 
 elCatagories.addEventListener('change', function() {
 	var catRegExp = new RegExp(this.value, 'gi');
