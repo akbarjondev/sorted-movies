@@ -85,6 +85,19 @@ elForm.addEventListener('submit', function(evt) {
 
 
 //***************************SELECT CATAGORY**************************//
+// sorted catagories
+var selectedCatagories = editedMovies.map(function(movie) {
+	return movie.catagories.split('|');
+});
+
+var allCatagories = [];
+selectedCatagories.forEach(function(catagory) {
+	for(var cat of catagory) {
+		allCatagories.push(cat);
+	}
+});
+allCatagories.sort()
+
 elCatagories.addEventListener('change', function() {
 	var catRegExp = new RegExp(this.value, 'gi');
 
