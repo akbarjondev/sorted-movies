@@ -22,6 +22,7 @@ var resultNumberWrapper = $_('.result-number-wrapper');
 var editedMovies = movies.map(function(movie) {
 	return {
 		title: movie.Title.toString(),
+		catagories: movie.Categories,
 		year: movie.movie_year,
 		rating: movie.imdb_rating,
 		ytLink: `https://www.youtube.com/watch?v=${movie.ytid}`
@@ -39,6 +40,8 @@ var appendMoviesToFragment = function(movie) {
 	newElMovieTemplate.querySelector('.movie__title').textContent = movie.title;
 	newElMovieTemplate.querySelector('.movie__year').textContent = movie.year;
 	newElMovieTemplate.querySelector('.movie__rating').textContent = movie.rating;
+	newElMovieTemplate.querySelector('.movie__catagory').textContent = movie.catagories.split('|');
+	newElMovieTemplate.querySelector('.movie__catagory').title = movie.catagories;
 	newElMovieTemplate.querySelector('.movie__youtube-link').href = movie.ytLink;
 
 	return newElMovieTemplate;
@@ -53,12 +56,10 @@ editedMovies.forEach(function(movie) {
 elMovies.append(moviesFragment);
 
 
-//*******************SEARCH**************************//
+//**************************SEARCH**************************//
 elForm.addEventListener('submit', function(evt) {
 	evt.preventDefault();
 
-	elMovies.innerHTML = '';
-	
 	// create RegEx word
 	var regExpWord = new RegExp(elSearch.value.trim(), 'gi');
 
@@ -73,9 +74,35 @@ elForm.addEventListener('submit', function(evt) {
 	});
 
 	// add fragment box to the body
+	elMovies.innerHTML = '';
 	elMovies.append(moviesFragment);
 
+	// count movies
 	var newElAlertTemplate = elAlertTemplate.cloneNode(true);
 	newElAlertTemplate.querySelector('.js-result-num').textContent = matchedMoviesWithSearch.length;
+	resultNumberWrapper.innerHTML = newElAlertTemplate.firstElementChild.outerHTML;
+});
+
+
+//***************************SELECT CATAGORY**************************//
+elCatagories.addEventListener('change', function() {
+	var catRegExp = new RegExp(this.value, 'gi');
+
+	var filteredByCatagory = editedMovies.filter(function(movie) {
+		return movie.catagories.match(catRegExp);
+	});
+
+	// append movies to the fragment box
+	filteredByCatagory.forEach(function(movie) {
+		moviesFragment.append(appendMoviesToFragment(movie));
+	});
+
+	// add fragment box to the body
+	elMovies.innerHTML = '';
+	elMovies.append(moviesFragment);
+
+	// count movies
+	var newElAlertTemplate = elAlertTemplate.cloneNode(true);
+	newElAlertTemplate.querySelector('.js-result-num').textContent = filteredByCatagory.length;
 	resultNumberWrapper.innerHTML = newElAlertTemplate.firstElementChild.outerHTML;
 });

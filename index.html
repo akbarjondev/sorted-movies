@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sorted Movies</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -24,14 +23,18 @@
 
 	 					<select class="form-control mx-3 js-catagories" name="catagory">
 	 						<option value="" disabled selected>Select catagory</option>
-	 						<option value="Anime">Anime</option>
+	 						<option value="Sport">Sport</option>
+	 						<option value="Comedy">Comedy</option>
+	 						<option value="Family">Family</option>
 	 						<option value="Fantasy">Fantasy</option>
+	 						<option value="Action">Action</option>
+	 						<option value="Adventure">Adventure</option>
 	 					</select>
 
 	 					<select class="form-control js-sort" name="sort">
 	 						<option value="" disabled selected>Sort by</option>
-	 						<option value="Anime">Rating</option>
-	 						<option value="Fantasy">Year</option>
+	 						<option value="rating">Rating</option>
+	 						<option value="year">Year</option>
 	 					</select>
 
 	 					<button class="btn btn-primary ml-3" type="submit">Find</button>
@@ -54,6 +57,7 @@
 				<h3 class="movie__title h4 pt-2 text-truncate">Movie name Movie name Movie name Movie name</h3>
 				<div>Year: <small class="movie__year">2017</small></div>
 				<div>IMDB: <small class="movie__rating">6.5</small></div>
+				<div class="text-truncate">Catagory: <small class="movie__catagory">Anime</small></div>
 				<a class="movie__youtube-link text-primary" href="#" target="_blank">Watch trailer</a>
 			</div>
 		</div><!-- End of movie -->
