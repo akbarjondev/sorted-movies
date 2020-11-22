@@ -24,7 +24,6 @@ var editedMovies = movies.map(function(movie) {
 // create array for movies
 var movieArray = [];
 
-
 // append all movies to the page
 var moviesFragment = document.createDocumentFragment();
 
@@ -42,15 +41,6 @@ var appendMoviesToFragment = function(movie) {
 
 	return newElMovieTemplate;
 }
-
-// append movies to the fragment box
-movieArray = editedMovies.slice();
-movieArray.forEach(function(movie) {
-	moviesFragment.append(appendMoviesToFragment(movie));
-});
-
-// add fragment box to the body
-elMovies.append(moviesFragment);
 
 //***************************CATAGORIES**************************//
 // sorted catagories
@@ -79,6 +69,8 @@ deleteDuplicatCatagory(allCatagories).forEach(function(catagory) {
 //**************************SEARCH**************************//
 elForm.addEventListener('submit', function(evt) {
 	evt.preventDefault();
+
+	movieArray = editedMovies.slice();
 
 	// create RegEx word
 	var regExpWord = new RegExp(elSearch.value.trim(), 'gi');
@@ -126,3 +118,13 @@ elForm.addEventListener('submit', function(evt) {
 	newElAlertTemplate.querySelector('.js-result-num').textContent = movieArray.length;
 	resultNumberWrapper.innerHTML = newElAlertTemplate.firstElementChild.outerHTML;
 });
+
+// append movies to the fragment box
+movieArray = editedMovies.slice();
+
+movieArray.forEach(function(movie) {
+	moviesFragment.append(appendMoviesToFragment(movie));
+});
+
+// add fragment box to the body
+elMovies.append(moviesFragment);
