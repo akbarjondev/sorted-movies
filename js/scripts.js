@@ -29,6 +29,10 @@ var editedMovies = movies.map(function(movie) {
 	};
 });
 
+// create array for movies
+var movieArray = [];
+
+
 // append all movies to the page
 var moviesFragment = document.createDocumentFragment();
 
@@ -48,56 +52,29 @@ var appendMoviesToFragment = function(movie) {
 }
 
 // append movies to the fragment box
-editedMovies.forEach(function(movie) {
+movieArray = editedMovies.slice();
+movieArray.forEach(function(movie) {
 	moviesFragment.append(appendMoviesToFragment(movie));
 });
 
 // add fragment box to the body
 elMovies.append(moviesFragment);
 
-
-//**************************SEARCH**************************//
-elForm.addEventListener('submit', function(evt) {
-	evt.preventDefault();
-
-	// create RegEx word
-	var regExpWord = new RegExp(elSearch.value.trim(), 'gi');
-
-	// Array: matched movies by search key
-	var matchedMoviesWithSearch = editedMovies.filter(function(movie) {
-		return movie.title.match(regExpWord);
-	});
-
-	// append movies to the fragment box
-	matchedMoviesWithSearch.forEach(function(movie) {
-		moviesFragment.append(appendMoviesToFragment(movie));
-	});
-
-	// add fragment box to the body
-	elMovies.innerHTML = '';
-	elMovies.append(moviesFragment);
-
-	// count movies
-	var newElAlertTemplate = elAlertTemplate.cloneNode(true);
-	newElAlertTemplate.querySelector('.js-result-num').textContent = matchedMoviesWithSearch.length;
-	resultNumberWrapper.innerHTML = newElAlertTemplate.firstElementChild.outerHTML;
-});
-
-
-//***************************SELECT CATAGORY**************************//
+//***************************CATAGORIES**************************//
 // sorted catagories
-var selectedCatagories = editedMovies.map(function(movie) {
+var selectCatagories = editedMovies.map(function(movie) {
 	return movie.catagories.split('|');
 });
 
 var allCatagories = [];
-selectedCatagories.forEach(function(catagory) {
+selectCatagories.forEach(function(catagory) {
 	for(var cat of catagory) {
 		allCatagories.push(cat);
 	}
 });
 allCatagories.sort();
 
+// get all catagories from movies and delete duplicate ones, return only pure catagories
 var deleteDuplicatCatagory = function(catagoryArray) {
 	var cleanCatagories = [];
 	var firstCatagory = null;
@@ -122,15 +99,45 @@ deleteDuplicatCatagory(allCatagories).forEach(function(catagory) {
 	elCatagories.append(elNewOption);
 });
 
-elCatagories.addEventListener('change', function() {
-	var catRegExp = new RegExp(this.value, 'gi');
 
-	var filteredByCatagory = editedMovies.filter(function(movie) {
-		return movie.catagories.match(catRegExp);
+//**************************SEARCH**************************//
+elForm.addEventListener('submit', function(evt) {
+	evt.preventDefault();
+
+	// create RegEx word
+	var regExpWord = new RegExp(elSearch.value.trim(), 'gi');
+
+	// Array: matched movies by search key
+	movieArray = movieArray.filter(function(movie) {
+		return movie.title.match(regExpWord);
 	});
 
+	// select catagory
+	if(Boolean(elCatagories.value)) {
+		var selectedCatagoryRegExp =  new RegExp(elCatagories.value, 'gi');
+
+		movieArray = movieArray.filter(function(movie) {
+			return movie.catagories.match(selectedCatagoryRegExp);
+		});
+	}
+
+	// select sort [year, rating]
+	if(Boolean(elSort.value)) {
+		movieArray = movieArray.sort(function(a, b) {
+			if(a[elSort.value] < b[elSort.value]) {
+				return -1;
+			}
+
+			if(a[elSort.value] > b[elSort.value]) {
+				return 1;
+			}
+
+			return 0;
+		});
+	}	
+
 	// append movies to the fragment box
-	filteredByCatagory.forEach(function(movie) {
+	movieArray.forEach(function(movie) {
 		moviesFragment.append(appendMoviesToFragment(movie));
 	});
 
@@ -140,6 +147,6 @@ elCatagories.addEventListener('change', function() {
 
 	// count movies
 	var newElAlertTemplate = elAlertTemplate.cloneNode(true);
-	newElAlertTemplate.querySelector('.js-result-num').textContent = filteredByCatagory.length;
+	newElAlertTemplate.querySelector('.js-result-num').textContent = movieArray.length;
 	resultNumberWrapper.innerHTML = newElAlertTemplate.firstElementChild.outerHTML;
 });
