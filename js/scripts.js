@@ -2,6 +2,7 @@
 var elForm = $_('.js-form');
 var elSearch = $_('.js-search', elForm);
 var elCatagories = $_('.js-catagories', elForm);
+var elRating = $_('.js-imdb-rating', elForm);
 var elSort = $_('.js-sort', elForm);
 
 // movies box
@@ -102,7 +103,14 @@ elForm.addEventListener('submit', function(evt) {
 
 			return 0;
 		});
-	}	
+	}
+
+	// sort by imdb rating
+	if(Boolean(parseFloat(elRating.value, 10))) {
+		movieArray = movieArray.filter(function(movie) {
+			return movie.rating >= elRating.value;
+		});
+	}
 
 	// append movies to the fragment box
 	movieArray.forEach(function(movie) {

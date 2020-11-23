@@ -18,20 +18,22 @@
  			</div>
  			<div class="row">
  				<div class="col-md-12 justify-content-center d-flex py-5">
-	 				<form class="form-inline js-form" action="https://echo.htmlacademy.ru" method="POST">
+	 				<form class="form-inline js-form w-100 justify-content-between" action="https://echo.htmlacademy.ru" method="POST">
 	 					<input class="form-control js-search" type="search" placeholder="Search by title" name="search" aria-label="Type to search">
 
-	 					<select class="form-control mx-3 js-catagories" name="catagory">
+	 					<select class="form-control js-catagories" name="catagory" aria-label="Select catagory">
 	 						<option value="" selected>Select catagory</option>
 	 					</select>
 
-	 					<select class="form-control js-sort" name="sort">
+	 					<input class="form-control js-imdb-rating" name="imdb_rating" aria-label="Select IMDB rating" type="number" step='0.1' max="10" min="0" placeholder="IMDB rating">
+
+	 					<select class="form-control js-sort" name="sort" aria-label="Select sort method">
 	 						<option value="" selected>Sort by</option>
 	 						<option value="rating">Rating</option>
 	 						<option value="year">Year</option>
 	 					</select>
 
-	 					<button class="btn btn-primary ml-3" type="submit">Find</button>
+	 					<button class="btn btn-primary" type="submit">Find</button>
 	 				</form>
  					
  				</div>
