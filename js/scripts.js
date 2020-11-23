@@ -49,23 +49,25 @@ var selectCatagories = editedMovies.map(function(movie) {
 	return movie.catagories.split('|');
 });
 
-var allCatagories = [];
+// get all catagories from movies and delete duplicate ones
+var finalCatagories = [];
 selectCatagories.forEach(function(catagory) {
-	for(var cat of catagory) {
-		allCatagories.push(cat);
-	}
+	catagory.forEach(function(eachCatagory) {
+		if(!finalCatagories.includes(eachCatagory)) {
+			finalCatagories.push(eachCatagory);
+		}
+	});
 });
-allCatagories.sort();
 
-// get all catagories from movies and delete duplicate ones, return only pure catagories
-deleteDuplicatCatagory(allCatagories).forEach(function(catagory) {
+// append only pure catagories
+finalCatagories.sort();
+finalCatagories.forEach(function(catagory) {
 	var elNewOption = document.createElement('option');
 	elNewOption.value = catagory;
 	elNewOption.textContent = catagory;
 
 	elCatagories.append(elNewOption);
 });
-
 
 //**************************SEARCH**************************//
 elForm.addEventListener('submit', function(evt) {
