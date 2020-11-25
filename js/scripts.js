@@ -28,6 +28,14 @@ var movieArray = [];
 // append all movies to the page
 var moviesFragment = document.createDocumentFragment();
 
+// create event delagation with modal button
+elMovies.addEventListener('click', (evt) => {
+	console.log(evt)
+	if(evt.target.matches('.modal-button')) {
+		alert('Bosildi');
+	}
+});
+
 // function: return part of movies in the fragment
 var appendMoviesToFragment = function(movie) {
 	var newElMovieTemplate = elMovieTemplate.cloneNode(true);
@@ -42,6 +50,7 @@ var appendMoviesToFragment = function(movie) {
 
 	return newElMovieTemplate;
 }
+
 
 //***************************CATAGORIES**************************//
 // sorted catagories
@@ -68,6 +77,7 @@ finalCatagories.forEach(function(catagory) {
 
 	elCatagories.append(elNewOption);
 });
+
 
 //**************************SEARCH**************************//
 elForm.addEventListener('submit', function(evt) {
@@ -130,7 +140,7 @@ elForm.addEventListener('submit', function(evt) {
 });
 
 // append movies to the fragment box
-movieArray = editedMovies.slice();
+movieArray = editedMovies.slice(0, 50);
 
 movieArray.forEach(function(movie) {
 	moviesFragment.append(appendMoviesToFragment(movie));
