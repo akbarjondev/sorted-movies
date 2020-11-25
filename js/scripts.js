@@ -12,11 +12,13 @@ var elAlertTemplate = $_('#alert-template').content;
 var resultNumberWrapper = $_('.result-number-wrapper');
 
 // clean movies object
-var editedMovies = movies.map(function(movie) {
+var editedMovies = movies.map(function(movie, index) {
 	return {
+		id: index + 1,
 		title: movie.Title.toString(),
 		catagories: movie.Categories,
 		year: movie.movie_year,
+		summary: movie.summary,
 		rating: movie.imdb_rating,
 		ytLink: `https://www.youtube.com/watch?v=${movie.ytid}`
 	};
@@ -27,14 +29,6 @@ var movieArray = [];
 
 // append all movies to the page
 var moviesFragment = document.createDocumentFragment();
-
-// create event delagation with modal button
-elMovies.addEventListener('click', (evt) => {
-	console.log(evt)
-	if(evt.target.matches('.modal-button')) {
-		alert('Bosildi');
-	}
-});
 
 // function: return part of movies in the fragment
 var appendMoviesToFragment = function(movie) {
@@ -47,10 +41,10 @@ var appendMoviesToFragment = function(movie) {
 	newElMovieTemplate.querySelector('.movie__catagory').textContent = movie.catagories.split('|');
 	newElMovieTemplate.querySelector('.movie__catagory').title = movie.catagories;
 	newElMovieTemplate.querySelector('.movie__youtube-link').href = movie.ytLink;
+	newElMovieTemplate.querySelector('.modal-button').dataset.id = movie.id;
 
 	return newElMovieTemplate;
 }
-
 
 //***************************CATAGORIES**************************//
 // sorted catagories
@@ -150,4 +144,21 @@ movieArray.forEach(function(movie) {
 });
 
 // add fragment box to the body
-elMovies.append(moviesFragment);
+elMovies.append(moviesFragment);movieArray
+
+// create event delagation with modal button
+// modal variables
+var elModalMovieTitle = $_('.js-modal-movie-title');
+var elModalMovieSummary = $_('.js-modal-movie-summary');
+
+elMovies.addEventListener('click', (evt) => {
+	if(evt.target.matches('.modal-button')) {
+		var getDataById = evt.target.dataset.id;
+		var findedMovie = movieArray.find(function(movie) {
+			return getDataById == movie.id;
+		});
+		elModalMovieTitle.textContent = findedMovie.title;
+		elModalMovieSummary.textContent = findedMovie.summary;
+		console.log(findedMovie);
+	}
+});
