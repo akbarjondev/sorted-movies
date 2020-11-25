@@ -159,6 +159,5 @@ elMovies.addEventListener('click', (evt) => {
 		});
 		elModalMovieTitle.textContent = findedMovie.title;
 		elModalMovieSummary.textContent = findedMovie.summary;
-		console.log(findedMovie);
 	}
 });
