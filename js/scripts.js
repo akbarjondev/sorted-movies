@@ -102,19 +102,22 @@ elForm.addEventListener('submit', function(evt) {
 		});
 	}
 
-	// select sort [year, rating]
+	// select sort
 	if(Boolean(elSort.value)) {
-		movieArray = movieArray.sort(function(a, b) {
-			if(a[elSort.value] < b[elSort.value]) {
-				return -1;
-			}
-
-			if(a[elSort.value] > b[elSort.value]) {
-				return 1;
-			}
-
-			return 0;
-		});
+		switch(elSort.value) {
+			case 'rating_asc':
+			case 'rating_desc':
+				movieArray = sortObjectRating(movieArray, elSort.value);
+				break;
+			case 'az':
+			case 'za':
+				movieArray = sortObjectName(movieArray, elSort.value);
+				break;
+			case 'year_asc':
+			case 'year_desc':
+				movieArray = sortObjectYear(movieArray, elSort.value);
+				break;
+		}
 	}
 
 	// sort by imdb rating
