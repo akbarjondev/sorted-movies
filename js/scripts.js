@@ -97,7 +97,7 @@ elForm.addEventListener('submit', function(evt) {
 	if(Boolean(elCatagories.value)) {
 		var selectedCatagoryRegExp =  new RegExp(elCatagories.value, 'gi');
 
-		movieArray = movieArray.filter(function(movie) {
+		movieArray.filter(function(movie) {
 			return movie.catagories.match(selectedCatagoryRegExp);
 		});
 	}
@@ -107,22 +107,22 @@ elForm.addEventListener('submit', function(evt) {
 		switch(elSort.value) {
 			case 'rating_asc':
 			case 'rating_desc':
-				movieArray = sortObjectRating(movieArray, elSort.value);
+				sortObjectRating(movieArray, elSort.value);
 				break;
 			case 'az':
 			case 'za':
-				movieArray = sortObjectName(movieArray, elSort.value);
+				sortObjectName(movieArray, elSort.value);
 				break;
 			case 'year_asc':
 			case 'year_desc':
-				movieArray = sortObjectYear(movieArray, elSort.value);
+				sortObjectYear(movieArray, elSort.value);
 				break;
 		}
 	}
 
 	// sort by imdb rating
 	if(Boolean(parseFloat(elRating.value, 10))) {
-		movieArray = movieArray.filter(function(movie) {
+		movieArray.filter(function(movie) {
 			return movie.rating >= elRating.value;
 		});
 	}
