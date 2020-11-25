@@ -20,7 +20,9 @@ var editedMovies = movies.map(function(movie, index) {
 		year: movie.movie_year,
 		summary: movie.summary,
 		rating: movie.imdb_rating,
-		ytLink: `https://www.youtube.com/watch?v=${movie.ytid}`
+		ytLink: `https://www.youtube.com/watch?v=${movie.ytid}`,
+		imageUrl: `http://i3.ytimg.com/vi/${movie.ytid}/hqdefault.jpg`,
+    bigImageUrl: `http://i3.ytimg.com/vi/${movie.ytid}/maxresdefault.jpg`,
 	};
 });
 
@@ -91,7 +93,7 @@ elForm.addEventListener('submit', function(evt) {
 	if(Boolean(elCatagories.value)) {
 		var selectedCatagoryRegExp =  new RegExp(elCatagories.value, 'gi');
 
-		movieArray.filter(function(movie) {
+		movieArray =  movieArray.filter(function(movie) {
 			return movie.catagories.match(selectedCatagoryRegExp);
 		});
 	}
@@ -101,22 +103,22 @@ elForm.addEventListener('submit', function(evt) {
 		switch(elSort.value) {
 			case 'rating_asc':
 			case 'rating_desc':
-				sortObjectRating(movieArray, elSort.value);
+				movieArray = sortObjectRating(movieArray, elSort.value);
 				break;
 			case 'az':
 			case 'za':
-				sortObjectName(movieArray, elSort.value);
+				movieArray = sortObjectName(movieArray, elSort.value);
 				break;
 			case 'year_asc':
 			case 'year_desc':
-				sortObjectYear(movieArray, elSort.value);
+				movieArray = sortObjectYear(movieArray, elSort.value);
 				break;
 		}
 	}
 
 	// sort by imdb rating
 	if(Boolean(parseFloat(elRating.value, 10))) {
-		movieArray.filter(function(movie) {
+		movieArray = movieArray.filter(function(movie) {
 			return movie.rating >= elRating.value;
 		});
 	}
@@ -150,6 +152,9 @@ elMovies.append(moviesFragment);movieArray
 // modal variables
 var elModalMovieTitle = $_('.js-modal-movie-title');
 var elModalMovieSummary = $_('.js-modal-movie-summary');
+var elModalMovieYear = $_('.js-modal-movie-year');
+var elModalMovieImdb = $_('.js-modal-movie-imdb');
+var elModalMovieImg = $_('.js-modal-movie-img');
 
 elMovies.addEventListener('click', (evt) => {
 	if(evt.target.matches('.modal-button')) {
@@ -159,5 +164,8 @@ elMovies.addEventListener('click', (evt) => {
 		});
 		elModalMovieTitle.textContent = findedMovie.title;
 		elModalMovieSummary.textContent = findedMovie.summary;
+		elModalMovieYear.textContent = findedMovie.year;
+		elModalMovieImdb.textContent = findedMovie.rating;
+		elModalMovieImg.src = findedMovie.bigImageUrl;
 	}
 });
