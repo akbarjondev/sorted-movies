@@ -22,3 +22,13 @@ img {
 h1 {
   font-weight: bold;
 }
+
+.bookmark-movie .js-movie-bookmark-title{
+	max-width: 250px;
+}
+
+.btn.js-movie-bookmark-remove {
+	width: 20px;
+	height: 20px;
+	padding: 0;
+}
