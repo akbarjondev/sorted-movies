@@ -183,6 +183,7 @@ var createNewBookmarkEl = function(array) {
 	array.forEach((movie) => {
 		var newBookmarkItem = elBookmarkTemplate.cloneNode(true);
 
+		newBookmarkItem.querySelector('.js-movie-bookmark-title').dataset.movieId = movie.id;
 		newBookmarkItem.querySelector('.js-movie-bookmark-title').textContent = movie.title;
 		bookmarksFragment.append(newBookmarkItem);
 	});
@@ -225,3 +226,12 @@ elMovies.addEventListener('click', (evt) => {
 });
 
 // if elMovieBookmarkRemove button pressed remove bookmarked movie from the array and list
+elMovieBookmarks.addEventListener('click', (evt) => {
+	var movieId = Number(evt.target.previousElementSibling.dataset.movieId);
+	evt.target.closest('.bookmark-movie').remove();
+	bookmarks.forEach(function(movie, index) {
+		if(movie.id == movieId) {
+			bookmarks.splice(index, 1);
+		}
+	});
+});
