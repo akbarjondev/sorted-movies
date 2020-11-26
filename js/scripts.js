@@ -9,7 +9,14 @@ var elSort = $_('.js-sort', elForm);
 var elMovies = $_('.movies');
 var elMovieTemplate = $_('#movie-template').content;
 var elAlertTemplate = $_('#alert-template').content;
+var elBookmarkTemplate = $_('#bookmark-template').content;
 var resultNumberWrapper = $_('.result-number-wrapper');
+
+// bookmark
+var bookmarks = [];
+var elMovieBookmarks = $_('.js-movie-bookmarks');
+var elMovieBookmarkTitle = $_('.js-movie-bookmark-title');
+var elMovieBookmarkRemove = $_('.js-movie-bookmark-remove');
 
 // clean movies object
 var editedMovies = movies.map(function(movie, index) {
@@ -146,7 +153,7 @@ movieArray.forEach(function(movie) {
 });
 
 // add fragment box to the body
-elMovies.append(moviesFragment);movieArray
+elMovies.append(moviesFragment);
 
 // create event delagation with modal button
 // modal variables
@@ -156,16 +163,65 @@ var elModalMovieYear = $_('.js-modal-movie-year');
 var elModalMovieImdb = $_('.js-modal-movie-imdb');
 var elModalMovieImg = $_('.js-modal-movie-img');
 
+// fill modal template
+var fillModalTemplate = function(getDataById, movieArray) {
+	var foundMovie = movieArray.find(function(movie) {
+		return getDataById == movie.id;
+	});
+
+	elModalMovieTitle.textContent = foundMovie.title;
+	elModalMovieSummary.textContent = foundMovie.summary;
+	elModalMovieYear.textContent = foundMovie.year;
+	elModalMovieImdb.textContent = foundMovie.rating;
+	elModalMovieImg.src = foundMovie.bigImageUrl;
+}
+
+// create new elements from template
+var createNewBookmarkEl = function(array) {
+	var bookmarksFragment = document.createDocumentFragment();
+
+	array.forEach((movie) => {
+		var newBookmarkItem = elBookmarkTemplate.cloneNode(true);
+
+		newBookmarkItem.querySelector('.js-movie-bookmark-title').textContent = movie.title;
+		bookmarksFragment.append(newBookmarkItem);
+	});
+	
+	elMovieBookmarks.innerHTML = '';
+	elMovieBookmarks.append(bookmarksFragment);
+}
+
+// listen wrapper of movies - event delegation
 elMovies.addEventListener('click', (evt) => {
+	// if modal-button is pressed, get movie id and search from movieArray, get movie object, push it to modal
 	if(evt.target.matches('.modal-button')) {
 		var getDataById = evt.target.dataset.id;
-		var findedMovie = movieArray.find(function(movie) {
-			return getDataById == movie.id;
+		
+		fillModalTemplate(getDataById, movieArray);
+	}
+
+	// if bookmark button is pressed: get movie object by dataset.id and push to array. Then append to dropdown menu
+	if(evt.target.matches('.bookmark-button')) {
+		var movieId = evt.target.previousElementSibling.dataset.id;
+
+		var foundMovie = movieArray.find((movie) => {
+			return movie.id == movieId;
 		});
-		elModalMovieTitle.textContent = findedMovie.title;
-		elModalMovieSummary.textContent = findedMovie.summary;
-		elModalMovieYear.textContent = findedMovie.year;
-		elModalMovieImdb.textContent = findedMovie.rating;
-		elModalMovieImg.src = findedMovie.bigImageUrl;
+
+		var isMovieBookmarked = false;
+		for(var movie of bookmarks) {
+			if(movie.id == movieId) {
+				isMovieBookmarked = true;
+				break;
+			}
+		}
+
+		if(!isMovieBookmarked) {
+			bookmarks.push(foundMovie);
+		}
+
+		createNewBookmarkEl(bookmarks);
 	}
 });
+
+// if elMovieBookmarkRemove button pressed remove bookmarked movie from the array and list
