@@ -13,7 +13,6 @@ var elBookmarkTemplate = $_('#bookmark-template').content;
 var resultNumberWrapper = $_('.result-number-wrapper');
 
 // bookmark
-var bookmarks = [];
 var elMovieBookmarks = $_('.js-movie-bookmarks');
 var elMovieBookmarkTitle = $_('.js-movie-bookmark-title');
 var elMovieBookmarkRemove = $_('.js-movie-bookmark-remove');
@@ -176,6 +175,8 @@ var fillModalTemplate = function(getDataById, movieArray) {
 	elModalMovieImg.src = foundMovie.bigImageUrl;
 }
 
+//*********BOOKMARKS**********//
+var bookmarks = JSON.parse(localStorage.getItem('bookmarkedMovies')) || [];
 // create new elements from template
 var createNewBookmarkEl = function(array) {
 	var bookmarksFragment = document.createDocumentFragment();
@@ -191,6 +192,8 @@ var createNewBookmarkEl = function(array) {
 	elMovieBookmarks.innerHTML = '';
 	elMovieBookmarks.append(bookmarksFragment);
 }
+
+createNewBookmarkEl(bookmarks);
 
 // listen wrapper of movies - event delegation
 elMovies.addEventListener('click', (evt) => {
@@ -219,9 +222,11 @@ elMovies.addEventListener('click', (evt) => {
 
 		if(!isMovieBookmarked) {
 			bookmarks.push(foundMovie);
+			
+			localStorage.setItem('bookmarkedMovies', JSON.stringify(bookmarks));
 		}
 
-		createNewBookmarkEl(bookmarks);
+		createNewBookmarkEl(JSON.parse(localStorage.getItem('bookmarkedMovies')));
 	}
 });
 
@@ -230,8 +235,11 @@ elMovieBookmarks.addEventListener('click', (evt) => {
 	var movieId = Number(evt.target.previousElementSibling.dataset.movieId);
 	
 	evt.target.closest('.bookmark-movie').remove();
-	
+
 	bookmarks.some(function(movie, index) {
-		return movie.id === movieId ? bookmarks.splice(index, 1) : false;
+		if(movie.id === movieId) {
+			bookmarks.splice(index, 1);
+			localStorage.setItem('bookmarkedMovies', JSON.stringify(bookmarks));
+		}
 	});
 });
