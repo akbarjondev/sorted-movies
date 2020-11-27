@@ -4,6 +4,9 @@ var elSearch = $_('.js-search', elForm);
 var elCatagories = $_('.js-catagories', elForm);
 var elRating = $_('.js-imdb-rating', elForm);
 var elSort = $_('.js-sort', elForm);
+var elNameModal = $_('.name-modal-wrapper');
+var elNameModalForm = $_('.form', elNameModal);
+var elNameModalInput = $_('.name-modal__input', elNameModal);
 
 // movies box
 var elMovies = $_('.movies');
@@ -242,4 +245,16 @@ elMovieBookmarks.addEventListener('click', (evt) => {
 			localStorage.setItem('bookmarkedMovies', JSON.stringify(bookmarks));
 		}
 	});
+});
+
+// name modal
+elNameModalForm.addEventListener('submit', (evt) => {
+	evt.preventDefault();
+
+	var userName = elNameModalInput.value.trim();
+	if(Boolean(userName)) {
+		elNameModal.classList.remove('show');	
+	}
+
+	localStorage.setItem('userName', userName);
 });

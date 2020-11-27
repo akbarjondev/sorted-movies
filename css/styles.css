@@ -26,3 +26,31 @@ h1 {
 .bookmark-movie .js-movie-bookmark-title{
 	max-width: 250px;
 }
+
+.name-modal-wrapper {
+	display: none;
+}
+
+.name-modal-wrapper.show {
+	display: block;
+}
+
+.name-modal {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 100;
+	min-width: 550px;
+	height: 200px;
+	padding: 25px;
+	transform: translateY(-50%) translateX(-50%);
+}
+
+.name-modal + span.curtain {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+}
