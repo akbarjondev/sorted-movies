@@ -228,10 +228,10 @@ elMovies.addEventListener('click', (evt) => {
 // if elMovieBookmarkRemove button pressed remove bookmarked movie from the array and list
 elMovieBookmarks.addEventListener('click', (evt) => {
 	var movieId = Number(evt.target.previousElementSibling.dataset.movieId);
+	
 	evt.target.closest('.bookmark-movie').remove();
-	bookmarks.forEach(function(movie, index) {
-		if(movie.id == movieId) {
-			bookmarks.splice(index, 1);
-		}
+	
+	bookmarks.some(function(movie, index) {
+		return movie.id === movieId ? bookmarks.splice(index, 1) : false;
 	});
 });
